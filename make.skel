@@ -1,0 +1,26 @@
+# -*- Mode: Makefile; -*- 
+## DO NOT EDIT
+
+ROOT=..
+
+-include $(ROOT)/make.local
+include $(ROOT)/make.in
+
+OBJS=$(SRC:.cpp=.o)
+DOBJS=$(DRIVERS:.cpp=.o)
+
+all:
+
+lib: $(OBJS)
+	ar r $(LIB) $(OBJS)
+
+%.o: %.cpp
+	$(CXX) -c $(CXXFLAGS) -I$(ROOT)/include ${1} $<
+
+Make.depend: $(SRC) $(DRIVERS)
+	$(CXX) $(CXXFLAGS) -I$(ROOT)/include -M $+ > Make.depend
+
+srcclean:
+	-rm -f $(OBJS) $(DOBJS) Make.depend
+
+include Make.depend
